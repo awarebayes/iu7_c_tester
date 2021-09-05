@@ -73,14 +73,13 @@ def check(ins, outs, args, pos=True):
         i = read_file(in_path)
 
         o = read_file(out_path)
-        #if o:
-        #    o += "\n"  # python thing, ignore
 
         process = Popen(["../main", *a], stdout=PIPE)
         (output, err) = process.communicate(input=str.encode(i))
         exit_code = process.wait()
         output = output.decode()
         output = ''.join(list(filter(lambda x: x != "\r", output)))
+        o = ''.join(list(filter(lambda x: x != "\r", output)))
 
         if pos and exit_code != 0:
             failed = True

@@ -87,15 +87,6 @@ def check(ins, outs, args, pos=True):
         if not pos and exit_code == 0:
             failed = True
         if output != o:
-            print(test_name)
-            if len(output) != len(o):
-                print("Different lens", len(output), len(o))
-                print(",".join(map(repr, o[-5:])))
-                print(",".join(map(repr, output[-5:])))
-            if True:
-                for x, y in zip(output, o):
-                    if x != y:
-                        print("Missmatch xy", repr(x), repr(y))
             failed = True
             for d in dl.unified_diff([o], [output]):
                 diff += d

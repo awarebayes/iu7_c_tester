@@ -43,3 +43,10 @@ $ tree .
 ```
 
 Где `_in.txt`  - вход, `_args.txt` - аргументы, `_out.txt` - выход.
+
+## _args.txt
+
+Агрументы перечисляются в 1 строчке. Пример:
+```
+./path/to/some/file arg1 --flag -option value
+```

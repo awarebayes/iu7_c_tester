@@ -73,23 +73,36 @@ def check(ins, outs, args, pos=True):
         i = read_file(in_path)
 
         o = read_file(out_path)
-        if o:
-            o += "\n"  # python thing, ignore
+        #if o:
+        #    o += "\n"  # python thing, ignore
 
         process = Popen(["../main", *a], stdout=PIPE)
         (output, err) = process.communicate(input=str.encode(i))
-        output = output.decode()
         exit_code = process.wait()
+        output = output.decode()
+        output = ''.join(list(filter(lambda x: x != "\r", output)))
 
         if pos and exit_code != 0:
             failed = True
+        if not pos and exit_code == 0:
+            failed = True
         if output != o:
+            print(test_name)
+            if len(output) != len(o):
+                print("Different lens", len(output), len(o))
+                print(",".join(map(repr, o[-5:])))
+                print(",".join(map(repr, output[-5:])))
+            if True:
+                for x, y in zip(output, o):
+                    if x != y:
+                        print("Missmatch xy", repr(x), repr(y))
             failed = True
             for d in dl.unified_diff([o], [output]):
                 diff += d
         if failed:
             failed_table.add_row(test_name, diff, f"{exit_code}")
             fail_count += 1
+        
         table.add_row(test_name, f"{exit_code}", "❌" if failed else "✅")
 
     console.print(table)
